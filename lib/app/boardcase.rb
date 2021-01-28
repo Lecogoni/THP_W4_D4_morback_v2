@@ -4,7 +4,7 @@ class Boardcase
 
   def initialize
     @statut = 0
-    @content = " "
+    @content = "  " 
   end
   
 end

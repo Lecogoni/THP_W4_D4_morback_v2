@@ -21,7 +21,9 @@ class Board
   def is_full?
     for i in 0..2 do
       for j in 0..2 do
-        return false if @boardcase[i][j].content == " "
+        if @boardcase[i][j].content == "  "
+          return false
+        end
       end
     end
     return true
@@ -31,33 +33,32 @@ class Board
 
   def is_winner?
     # ligne horizontal haut
-    if (@boardcase[0][0].content == @boardcase[0][1].content) && (@boardcase[0][0].content == @boardcase[0][2].content)
+    if (@boardcase[0][0].content == @boardcase[0][1].content) && (@boardcase[0][1].content == @boardcase[0][2].content) && (@boardcase[0][0].content != "  ")
       return true
     # ligne horizontal middle
-    elsif (@boardcase[1][0].content == @boardcase[1][1].content) && (@boardcase[1][0].content == @boardcase[1][2].content)
+    elsif (@boardcase[1][0].content == @boardcase[1][1].content) && (@boardcase[1][0].content == @boardcase[1][2].content) && (@boardcase[1][0].content != "  ")
       return true
     # ligne horizontal bas
-    elsif (@boardcase[2][0].content == @boardcase[2][1].content) && (@boardcase[2][0].content == @boardcase[2][2].content)
+    elsif (@boardcase[2][0].content == @boardcase[2][1].content) && (@boardcase[2][0].content == @boardcase[2][2].content) && (@boardcase[2][0].content != "  ")
       return true
     # ligne vertical gauche
-    elsif (@boardcase[0][0].content == @boardcase[1][0].content) && (@boardcase[0][0].content == @boardcase[2][0].content)
+    elsif (@boardcase[0][0].content == @boardcase[1][0].content) && (@boardcase[0][0].content == @boardcase[2][0].content) && (@boardcase[0][0].content != "  ")
       return true
     # ligne vertical middle
-    elsif (@boardcase[0][1].content == @boardcase[1][1].content) && (@boardcase[0][1].content == @boardcase[2][1].content)
+    elsif (@boardcase[0][1].content == @boardcase[1][1].content) && (@boardcase[0][1].content == @boardcase[2][1].content) && (@boardcase[0][1].content != "  ")
       return true
     # ligne vertical droit
-    elsif (@boardcase[0][2].content == @boardcase[1][2].content) && (@boardcase[0][2].content == @boardcase[2][2].content)
+    elsif (@boardcase[0][2].content == @boardcase[1][2].content) && (@boardcase[0][2].content == @boardcase[2][2].content) && (@boardcase[0][2].content != "  ")
       return true
     # diagonal 1
-    elsif (@boardcase[0][0].content == @boardcase[1][1].content) && (@boardcase[0][0].content == @boardcase[2][2].content)
+    elsif (@boardcase[0][0].content == @boardcase[1][1].content) && (@boardcase[0][0].content == @boardcase[2][2].content) && (@boardcase[0][0].content != "  ")
       return true
     # diagonal 2
-    elsif (@boardcase[0][2].content == @boardcase[1][1].content) && (@boardcase[0][2].content == @boardcase[2][0].content)
+    elsif (@boardcase[0][2].content == @boardcase[1][1].content) && (@boardcase[0][2].content == @boardcase[2][0].content) && (@boardcase[0][2].content != "  ")
       return true
     else
-      return false
+    return false
     end
   end
-
 
 end

@@ -1,32 +1,45 @@
 class Launch
 
-  attr_accessor :players, :nbr_of_game, :current_game
-
-  def welcome_message
-    puts "-------------"
-    puts "-- WELCOME --"
-    puts "-------------"
-  end
+  attr_accessor :players, :nbr_of_game, :current_game, :avatar_choice, :current_game_show
 
   def ask_player_name(i)
-    puts "Quel est le nom du joueur #{i} ?"
+    puts "\nQuel est le nom du joueur #{i} ?"
     print ">> "
-    gets.chomp  
+    gets.chomp
+  end
+
+  def player_avatar(i)
+
+    puts ""
+    puts "choisi ton avatar, entre 1 et #{avatar_choice.length} : #{avatar_choice}"
+    print ">> "
+    avatar_number = gets.chomp.to_i
+    avatar = avatar_choice[avatar_number - 1]
+    avatar_choice.delete_at(avatar_number - 1)
+    return avatar
   end
 
   # initialize lance les bases d'une partie : 2 joueur - welcome message - regles
   def initialize
-    self.welcome_message
-
+    @avatar_choice = ["\u{1F60E}", "\u{1F921}", "\u{1F47B}", "\u{1F47D}", "\u{1F916}" ]
+    @current_game_show = ShowGame.new
+    @current_game_show.welcome_message
     @nbr_of_game = 0
     @players = []
+    
     for i in 1..2 do
-      players << Player.new(ask_player_name(i), i)
+      players << Player.new(ask_player_name(i), i, player_avatar(i))
+      system('clear')
     end
+    @current_game_show.show_board_rules
     @players.each {|player| player.show_player}
 
+    puts ""
+    puts "Quand tu es prêt appuie sur n'importe quelle touche \u{1F21A} pour commencer \u{25B6}"
+    gets.chomp
+
     self.launch_game
-    #self.show_board_rules
+
   end
 
 # ----- DEF QUI LANCE LE JEU UNE FOIS LES PLAYERS DEFINIE ------------
@@ -36,31 +49,48 @@ class Launch
   def launch_game
     @nbr_of_game += 1
     @current_game = Game.new(players)
-    puts "\n\nLet's go !!! - partie #{nbr_of_game} entre #{players[0].name.capitalize} et #{players[1].name.capitalize}"
-    sleep 1
+    system('clear')
+    puts "\n\nLet's go !!! - partie #{nbr_of_game} entre #{players[0].name.capitalize} aka #{players[0].avatar} et #{players[1].name.capitalize} aka #{players[1].avatar}"
+    @current_game_show.waiting
 
-    #current_game.board.is_full? == false || 
-    
-    until @current_game.board.is_winner? == true do
+  
+    #(@current_game.board.is_winner? == false || ) 
+    while @current_game.board.is_full? == false
+      system('clear')
+      @current_game_show.show_board_game(current_game)
+      #self.show_board #=> affiche le board
       self.who_is_playing #=> affiche a qui de joueur
       self.player_choice #=> choix du joeur et traitement de l'info
-      self.show_board #=> affiche le board
-      #break if current_game.board.is_full? == false || @current_game.board.is_winner? == false
+      break if @current_game.board.is_winner? == true
       self.change_run #=> ajout un tour a @run
-      #binding.pry
+
     end
-    puts "partie fini"
+    system('clear')
+    @current_game_show.show_board_game(current_game)
+    if @current_game.board.is_full? == false
+      puts "\u{2728} \u{1F389} nous avons un vainqueur \u{1F37E} \u{2728}"
+    else
+      puts "\u{1F91D} C'est un match nul"
+    end
   end
 
 # --------------------------------------------------------------------
 
-  def show_board
-    ShowGame.new.show_board_game(current_game)
-  end
+  # def show_board
+  #   ShowGame.new.show_board_game(current_game)
+  # end
 
-  def show_board_rules
-    ShowGame.new.show_board_rules
-  end
+  # def welcome_message
+  #   ShowGame.new.welcome_message
+  # end
+
+  # def show_board_rules
+  #   ShowGame.new.show_board_rules
+  # end
+
+  # def waiting
+  #   ShowGame.new.waiting
+  # end
 
   # affiche a quel joueur c'est de jouer
   #calculer en fonction du % de @run selon al position de chaque joueur (1 ou 2)
@@ -68,10 +98,10 @@ class Launch
   def who_is_playing
     if current_game.run % 2 == 1
       #system('clear')
-      puts "\n#{players[0].name.capitalize} c'est à toi, dans quelle case joues-tu ?"
+      puts "\n#{players[0].avatar} c'est à toi, dans quelle case joues-tu ?"
     else
       #system('clear')
-      puts "\n#{players[1].name.capitalize} c'est à toi, dans quelle case joues-tu ?"
+      puts "\n#{players[1].avatar} c'est à toi, dans quelle case joues-tu ?"
     end
   end
 
@@ -90,11 +120,11 @@ class Launch
       if current_game.boardcase_is_empty?(translate_player_choice(choice)) == true
         current_game.change_boardcase(translate_player_choice(choice))
       else
-        puts "la case choisie est déjà occupée, choisie en une autre"
+        puts "\u{2622} \u{1F615} la case choisie est déjà occupée, choisie en une autre"
         self.player_choice
       end
     else
-      puts "La commande entrée ne correspond a aucune case du board, essaie encore"
+      puts "\u{26D4} \u{1F92C} La commande entrée ne correspond a aucune case du board, essaie encore"
       self.player_choice
     end
   end

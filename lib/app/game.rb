@@ -11,11 +11,11 @@ class Game
   # check si la case est vide - si on peut jouer dedans
 
   def boardcase_is_empty?(choice_array)
-    board.boardcase[choice_array[0]][choice_array[1]].content == " "
+    board.boardcase[choice_array[0]][choice_array[1]].content == "  "
   end
 
   # change la valeur de boardcase par le symbol du joueur calculé sur le run / tour en cour
-  
+
   def change_boardcase(choice_array)
     if run % 2 == 1
       board.boardcase[choice_array[0]][choice_array[1]].content = players[0].symbol
