@@ -10,6 +10,8 @@ class Player
     @win = 0
   end
 
+  # affiche les joueurs, leur symbol, avatar et position
+
   def show_player
     if @position == 1
       puts "le joueur #{@position} : #{@name.capitalize} #{@avatar} a le symbol #{symbol} il débutera la partie"
@@ -18,13 +20,15 @@ class Player
     end
   end
 
+  # switch la postion et le symbol des joueurs
+
   def switch_player_position
     if @position == 1
-      @position = 2
       @symbol = "\u{274C}"
+      @position = 2
     elsif @position == 2
-      @position = 1
       @symbol = "\u{2705}"
+      @position = 1
     end
   end
 

@@ -3,8 +3,10 @@ class ShowGame
   def initialize
   end
 
+  # affichage du board avec les bonnes valeurs 
   def show_board_game(current_game)
     puts "#{current_game.players[0].name.capitalize} #{current_game.players[0].avatar} #{current_game.players[0].symbol} \u{1F19A} #{current_game.players[1].name.capitalize} #{current_game.players[1].avatar} #{current_game.players[1].symbol}"
+    puts ""
     for i in 0..2 do
       puts "----------------"
       for j in 0..2 do
@@ -15,6 +17,7 @@ class ShowGame
     puts "----------------"
   end
   
+  # tableau de comment jouer
   def show_board_rules
     system('clear')
     puts "Comment jouer - je suis sur que tu connais les règles !!"
@@ -33,6 +36,22 @@ class ShowGame
     puts ""
   end
 
+    # tableau de comment jouer - rappel
+    def show_board_rules_reminder
+      puts "il suffit juste de choisir une case vide entre 1 et 9 !"
+      cell_number = 1
+      for i in 0..2 do
+        puts "-------------"
+        for j in 0..2 do
+          print "| #{cell_number} "
+          cell_number += 1
+        end
+        puts "|"
+      end
+      puts "-------------"
+    end
+
+  # ASCII art message - message de lancement
   def welcome_message
     system('clear')
     puts " _   _      _ _   "
@@ -50,6 +69,7 @@ class ShowGame
     puts "\nAvant de commencer entre le nom des deux joueurs qui vont s'affronter"
   end
 
+  # ASCII art message - en cas de gagnant
   def congrats_message
     puts "                  ___________"
     sleep 0.1
@@ -72,20 +92,23 @@ class ShowGame
     puts '                   `"""""""`'
   end
 
+  # Menu demandant si on veut intervertir la position des joueurs
   def switch_player_or_play_show
     puts ""
     puts "Souhaites tu intervertir \u{1F504} la position des joueurs ? y - n"
     gets.chomp
   end
 
+  # simple affichage
   def waiting
-    40.times do
+    30.times do
       print "."
       sleep 0.1
     end
     sleep 0.2
   end
   
+  # menu de fin de partie
   def final_menu
     puts ""
     puts ""

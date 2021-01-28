@@ -88,7 +88,7 @@ class Launch
     end
 
     self.resume_games
-    sleep 8
+    sleep 6
 
 # ------------------- Menu de fin de partie ---------------
     
@@ -131,6 +131,7 @@ class Launch
       end
     else
       puts "\u{26D4} \u{1F92C} La commande entrée ne correspond a aucune case du board, essaie encore"
+      @current_game_show.show_board_rules_reminder
       self.player_choice
     end
   end
@@ -155,11 +156,14 @@ class Launch
     current_game.run += 1 
   end
 
+  # change la valeur du nbre de match nul
+
   def its_a_draw
     @draw += 1
   end
 
   # permet de savoir quel joueur a gagner et lui ajouter un point de victoire a @win
+
   def winner_is
     win_number = current_game.run % 2
     if win_number == 1
@@ -172,21 +176,25 @@ class Launch
   end
 
   # affiche un recap du nombre de partie - draw - win
+
   def resume_games
     puts "\u{2728} ça fait #{nbr_of_game} partie - #{draw} match null \u{2728} #{players[0].name.capitalize} #{players[0].avatar} a #{players[0].win} victoire #{players[1].name.capitalize} #{players[1].avatar} a #{players[1].win} \u{2728}"
   end
   
   # fetch a random quote
+
   def randow_quotes
     response = HTTParty.get('http://quotes.stormconsultancy.co.uk/random.json')
     quo = response.body
     quote = quo.split('"')[9]
   end
 
+  # menu de changement de position des joueurs
+
   def switch_player_or_play_menu(player_answer)
     case player_answer
     when "y"
-      @players.each {|player| player.switch_player_position}
+      self.switch_player_position
       @players.each {|player| player.show_player}
       puts ""
       @current_game_show.waiting
@@ -201,16 +209,20 @@ class Launch
     end
   end
 
+  # execution du choix du menu final
+
   def final_menu_choice(final_answer)
     case final_answer
     when 1
       self.launch_game
     when 2
       puts ""
+      system("ruby app.rb")
     when 3
-        puts "Et voilà"
+        puts "Et voilà :"
         puts self.randow_quotes
-        @final_answer = @current_game_show.final_menu
+        answer = @current_game_show.final_menu
+        self.final_menu_choice(answer)
     when 4
       puts "bye bye !!!"
       system("exit")
@@ -218,6 +230,15 @@ class Launch
       puts "\u{1F621} soit tu ne fais pas attention quand tu tapes soit tu n'as rien compris "
       @final_answer = @current_game_show.final_menu
     end
+  end
+
+  # execution changement de position des joueurs - change position, symbol, position dans l'array
+
+  def switch_player_position
+    @players.each {|player| player.switch_player_position}
+    player_switch = players[0]
+    players.shift
+    players.push(player_switch)
   end
 
 end

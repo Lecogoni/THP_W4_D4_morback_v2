@@ -17,7 +17,8 @@ class Game
   # change la valeur de boardcase par le symbol du joueur calculé sur le run / tour en cour
 
   def change_boardcase(choice_array)
-    if run % 2 == 1
+    value = run % 2
+    if value == 1
       board.boardcase[choice_array[0]][choice_array[1]].content = players[0].symbol
     else
       board.boardcase[choice_array[0]][choice_array[1]].content = players[1].symbol
