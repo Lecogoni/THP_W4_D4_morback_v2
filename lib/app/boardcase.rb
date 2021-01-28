@@ -1,9 +1,8 @@
 class Boardcase
 
-  attr_accessor :statut, :content
+  attr_accessor :content
 
   def initialize
-    @statut = 0
     @content = "  " 
   end
   
